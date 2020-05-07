@@ -11,13 +11,11 @@ func main() {
 	router := gin.Default()
 	configs.Connect()
 
-	// groups------------------------------------------
-	user := router.Group("user")
-
 	// routes------------------------------------------
 	router.GET("", root)
 
 	// user routes=====================================
+	user := router.Group("user")
 	{
 		user.GET("", controllers.GetUser)
 	}
