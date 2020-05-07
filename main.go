@@ -1,6 +1,7 @@
 package main
 
 import (
+	configs "nameless_app/configs"
 	controllers "nameless_app/controllers"
 
 	"github.com/gin-gonic/gin"
@@ -8,10 +9,20 @@ import (
 
 func main() {
 	router := gin.Default()
+	configs.Connect()
 
+	// groups------------------------------------------
+	user := router.Group("user")
+
+	// routes------------------------------------------
 	router.GET("", root)
-	router.GET("/user", controllers.GetUser)
 
+	// user routes=====================================
+	{
+		user.GET("", controllers.GetUser)
+	}
+
+	// run---------------------------------------------
 	router.Run(":3000")
 }
 
