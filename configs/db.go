@@ -8,12 +8,12 @@ import (
 )
 
 // Connecting to db
-func Connect() *pg.DB {
+func Connect(user string, password string, addr string, name string) *pg.DB {
 	opts := &pg.Options{
-		User:     "postgres",
-		Password: "",
-		Addr:     "localhost:5432",
-		Database: "nameless_app",
+		User:     user,
+		Password: password,
+		Addr:     addr,
+		Database: name,
 	}
 
 	var db *pg.DB = pg.Connect(opts)
