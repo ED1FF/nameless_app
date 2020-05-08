@@ -15,11 +15,11 @@ func InitiateDB(db *pg.DB) {
 }
 
 type User struct {
-	ID        string    `json:"id"`
-	FirstName string    `json:"first_name"`
-	Email     string    `json:"email"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        guuid.UUID `json:"id"`
+	username  string     `json:"username"`
+	Email     string     `json:"email"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
 }
 
 func GetAllUsers() (users []User) {
@@ -32,10 +32,8 @@ func GetAllUsers() (users []User) {
 }
 
 func CreateUser() (user User) {
-	id := guuid.New().String()
 	email := user.Email
 	insertError := dbConnect.Insert(&User{
-		ID:        id,
 		Email:     email,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
@@ -47,7 +45,7 @@ func CreateUser() (user User) {
 	return
 }
 
-func GetSingleUser(userId string) (user User) {
+func GetSingleUser(userId guuid.UUID) (user User) {
 	user = User{ID: userId}
 	err := dbConnect.Select(user)
 
@@ -66,7 +64,7 @@ func EditUser(userId string, m map[string]string) (user User) {
 	return
 }
 
-func DeleteUser(userId string) (user User) {
+func DeleteUser(userId guuid.UUID) (user User) {
 	user = User{ID: userId}
 	err := dbConnect.Delete(user)
 
