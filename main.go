@@ -16,8 +16,9 @@ func init() {
 }
 
 func main() {
+	conf := configs.New()
 	router := gin.Default()
-	configs.Connect()
+	configs.Connect(conf.Db.Username, conf.Db.Password, conf.Db.Address, conf.Db.Name)
 
 	// routes------------------------------------------
 	router.GET("", root)
