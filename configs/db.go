@@ -2,6 +2,7 @@ package configs
 
 import (
 	"log"
+	"nameless_app/model"
 	"os"
 
 	"github.com/go-pg/pg/v9"
@@ -24,5 +25,6 @@ func Connect(user string, password string, addr string, name string) *pg.DB {
 	}
 
 	log.Printf("Connected to db")
+	model.InitiateDB(db)
 	return db
 }

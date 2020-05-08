@@ -1,7 +1,9 @@
-package controllers
+package model
 
 import (
+	"fmt"
 	"log"
+	"net/url"
 	"time"
 
 	"github.com/go-pg/pg/v9"
@@ -16,10 +18,30 @@ func InitiateDB(db *pg.DB) {
 
 type User struct {
 	ID        guuid.UUID `json:"id"`
-	username  string     `json:"username"`
+	Username  string     `json:"username"`
 	Email     string     `json:"email"`
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
+}
+
+func (user *User) BuildUser(params url.Values) *User {
+	user.Email = params.Get("email")
+	user.Username = params.Get("username")
+	user.CreatedAt = time.Now()
+	user.UpdatedAt = time.Now()
+
+	return user
+}
+
+func CreateUser(params url.Values) (user User, messege string) {
+	insertError := dbConnect.Insert(user.BuildUser(params))
+
+	if insertError != nil {
+		messege = fmt.Sprintf("Error while inserting new user into db, Reason: %v\n", insertError)
+	} else {
+		messege = "User Successfuly Created"
+	}
+	return
 }
 
 func GetAllUsers() (users []User) {
@@ -27,20 +49,6 @@ func GetAllUsers() (users []User) {
 
 	if err != nil {
 		log.Printf("Error while getting all users, Reason: %v\n", err)
-	}
-	return
-}
-
-func CreateUser() (user User) {
-	email := user.Email
-	insertError := dbConnect.Insert(&User{
-		Email:     email,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	})
-
-	if insertError != nil {
-		log.Printf("Error while inserting new user into db, Reason: %v\n", insertError)
 	}
 	return
 }

@@ -24,10 +24,9 @@ func main() {
 	router.GET("", root)
 
 	// user routes=====================================
-	user := router.Group("user")
-	{
-		user.GET("", controllers.GetUser)
-	}
+	router.GET("user", controllers.GetUser)
+	router.GET("users", controllers.GetUsers)
+	router.POST("user", controllers.PostUser)
 
 	// run---------------------------------------------
 	router.Run(":3000")
@@ -35,6 +34,6 @@ func main() {
 
 func root(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"message": "pong",
+		"message": "ROOT BLANK PAGE",
 	})
 }
