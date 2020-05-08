@@ -33,13 +33,11 @@ func (user *User) BuildUser(params url.Values) *User {
 	return user
 }
 
-func CreateUser(params url.Values) (user User, messege string) {
+func CreateUser(params url.Values) (user User, err string) {
 	insertError := dbConnect.Insert(user.BuildUser(params))
 
 	if insertError != nil {
-		messege = fmt.Sprintf("Error while inserting new user into db, Reason: %v\n", insertError)
-	} else {
-		messege = "User Successfuly Created"
+		err = fmt.Sprintf("Error while inserting new user into db, Reason: %v\n", insertError)
 	}
 	return
 }
