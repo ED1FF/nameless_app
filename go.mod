@@ -3,12 +3,15 @@ module nameless_app
 go 1.14
 
 require (
+	github.com/boj/redistore v0.0.0-20180917114910-cd5dcc76aeff // indirect
 	github.com/d4l3k/go-pry v0.0.0-20181122210047-3e3af674fe57 // indirect
+	github.com/gin-gonic/contrib v0.0.0-20191209060500-d6e26eeaa607
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-pg/migrations/v7 v7.1.10
 	github.com/go-pg/pg v8.0.6+incompatible // indirect
 	github.com/go-pg/pg/v9 v9.1.6
 	github.com/google/uuid v1.1.1
+	github.com/gorilla/sessions v1.2.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/mattn/go-colorable v0.1.6 // indirect
