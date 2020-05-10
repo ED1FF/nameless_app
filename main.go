@@ -21,22 +21,9 @@ func init() {
 
 func main() {
 	conf := configs.New()
-	r := engine()
-
 	configs.Connect(conf.Db.Username, conf.Db.Password, conf.Db.Address, conf.Db.Name)
-	r.Use(gin.Logger())
 
-	if err := engine().Run(":3000"); err != nil {
-		log.Fatal("Unable to start:", err)
-	}
-}
-
-func engine() *gin.Engine {
-	r := gin.New()
-	r.Use(sessions.Sessions("mysession", sessions.NewCookieStore([]byte("secret"))))
-	r.POST("/login", controllers.Login)
-	r.GET("/logout", controllers.Logout)
-
+	r := gin.Default()
 	// routes------------------------------------------
 	r.GET("", root)
 	// user============================================
@@ -49,9 +36,14 @@ func engine() *gin.Engine {
 		private.GET("/me", controllers.Me)
 		private.GET("/status", controllers.Status)
 	}
+	r.Use(sessions.Sessions("mysession", sessions.NewCookieStore([]byte("secret"))))
+	r.POST("/login", controllers.Login)
+	r.GET("/logout", controllers.Logout)
 	//-------------------------------------------------
 
-	return r
+	if err := r.Run(":3000"); err != nil {
+		log.Fatal("Unable to start:", err)
+	}
 }
 
 func root(c *gin.Context) {
