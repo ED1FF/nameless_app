@@ -33,7 +33,6 @@ func main() {
 	private := r.Group("/private")
 	private.Use(controllers.AuthRequired)
 	{
-		private.GET("/me", controllers.Me)
 		private.GET("/status", controllers.Status)
 	}
 	r.Use(sessions.Sessions("mysession", sessions.NewCookieStore([]byte("secret"))))
