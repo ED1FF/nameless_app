@@ -8,15 +8,18 @@ import (
 type Hash struct{}
 
 //Generate a salted hash for the input string
-func Generate(s string) (string, error) {
+func Generate(s string) string {
+	if s == "" {
+		return ""
+	}
 	saltedBytes := []byte(s)
 	hashedBytes, err := bcrypt.GenerateFromPassword(saltedBytes, bcrypt.DefaultCost)
 	if err != nil {
-		return "", err
+		return ""
 	}
 
 	hash := string(hashedBytes[:])
-	return hash, nil
+	return hash
 }
 
 //Compare string to generated hash

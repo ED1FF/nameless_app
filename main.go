@@ -16,9 +16,6 @@ func init() {
 	}
 }
 
-// Thanks to otraore for the code example
-// https://gist.github.com/otraore/4b3120aa70e1c1aa33ba78e886bb54f3
-
 func main() {
 	conf := configs.New()
 	configs.Connect(conf.Db.Username, conf.Db.Password, conf.Db.Address, conf.Db.Name)

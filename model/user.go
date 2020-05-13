@@ -6,6 +6,8 @@ import (
 	"net/url"
 	"time"
 
+	crypto "nameless_app/lib"
+
 	"github.com/go-pg/pg/v9"
 	guuid "github.com/google/uuid"
 )
@@ -20,21 +22,28 @@ type User struct {
 	ID        guuid.UUID `json:"id"`
 	Username  string     `json:"username"`
 	Email     string     `json:"email"`
+	Password  string     `json:"password"`
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
 }
 
-func (user *User) BuildUser(params url.Values) *User {
+func (user *User) buildUser(params url.Values) *User {
+	crypto_password := crypto.Generate(params.Get("password"))
+
 	user.Email = params.Get("email")
 	user.Username = params.Get("username")
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
+	if crypto_password != "" {
+		user.Password = crypto_password
+	}
+
 	return user
 }
 
 func CreateUser(params url.Values) (user User, err string) {
-	insertError := dbConnect.Insert(user.BuildUser(params))
+	insertError := dbConnect.Insert(user.buildUser(params))
 
 	if insertError != nil {
 		err = fmt.Sprintf("Error while inserting new user into db, Reason: %v\n", insertError)
